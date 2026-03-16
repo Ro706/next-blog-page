@@ -1,6 +1,7 @@
 import connectDB from "@/lib/mongodb";
 import Post from "@/models/Post";
 import PostList from "@/components/PostList";
+import HeroSection from "@/components/HeroSection";
 
 export const runtime = 'nodejs';
 
@@ -26,15 +27,7 @@ export default async function Home() {
 
   return (
     <div className="space-y-8">
-      <header className="mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-          Welcome to <span className="text-blue-600">DevBlog</span>
-        </h1>
-        <p className="mt-4 text-xl text-gray-600">
-          Thoughts, stories and ideas.
-        </p>
-      </header>
-
+      <HeroSection />
       <PostList posts={posts} />
     </div>
   );
