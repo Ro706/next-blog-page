@@ -56,3 +56,35 @@ export async function uploadToGCS(file: File): Promise<string> {
   // Return the public URL
   return `https://storage.googleapis.com/${bucketName}/${fileName}`;
 }
+
+export async function deleteFromGCS(url: string): Promise<void> {
+  const bucketName = process.env.GCS_BUCKET_NAME;
+
+  if (!bucketName) {
+    throw new Error('GCS_BUCKET_NAME is not defined in environment variables');
+  }
+
+  // Extract the filename from the URL: https://storage.googleapis.com/bucket-name/filename
+  const prefix = `https://storage.googleapis.com/${bucketName}/`;
+  if (!url.startsWith(prefix)) {
+    console.warn(`URL ${url} does not match GCS bucket ${bucketName}. Skipping deletion.`);
+    return;
+  }
+
+  const fileName = url.substring(prefix.length);
+  const gcsStorage = getStorage();
+  const bucket = gcsStorage.bucket(bucketName);
+  const gcsFile = bucket.file(fileName);
+
+  try {
+    const [exists] = await gcsFile.exists();
+    if (exists) {
+      await gcsFile.delete();
+      console.log(`Deleted file ${fileName} from GCS.`);
+    }
+  } catch (error) {
+    console.error(`Error deleting file ${fileName} from GCS:`, error);
+    // We don't necessarily want to throw here to avoid failing the whole request
+    // if only the file deletion fails, but for critical operations, we might.
+  }
+}

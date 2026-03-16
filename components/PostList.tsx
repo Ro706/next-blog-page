@@ -4,6 +4,12 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import gsap from "gsap";
 
+import { 
+  ArrowUpIcon, 
+  ArrowDownIcon, 
+  ChatBubbleLeftRightIcon 
+} from "@heroicons/react/24/outline";
+
 export default function PostList({ posts }: { posts: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -51,11 +57,26 @@ export default function PostList({ posts }: { posts: any[] }) {
                     {post.excerpt}
                   </p>
                 )}
-                <div className="flex items-center text-blue-600 font-medium pt-2">
-                  Read more
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                <div className="flex items-center space-x-6 pt-4 border-t border-gray-50">
+                  <div className="flex items-center space-x-1.5 text-gray-500" title="Upvotes">
+                    <ArrowUpIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">{post.upvotes?.length || 0}</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5 text-gray-500" title="Downvotes">
+                    <ArrowDownIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">{post.downvotes?.length || 0}</span>
+                  </div>
+                  <div className="flex items-center space-x-1.5 text-gray-500" title="Comments">
+                    <ChatBubbleLeftRightIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">{post.comments?.length || 0}</span>
+                  </div>
+                  <div className="flex-grow"></div>
+                  <div className="flex items-center text-blue-600 font-medium text-sm">
+                    Read more
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </Link>

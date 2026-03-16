@@ -3,6 +3,7 @@ import { auth } from '@/auth';
 import connectDB from '@/lib/mongodb';
 import Post from '@/models/Post';
 import "@/models/User"; // Ensure User model is registered for population
+import { deleteFromGCS } from '@/lib/gcs';
 
 export async function GET(
   req: Request,
@@ -11,7 +12,9 @@ export async function GET(
   try {
     const { id } = await params;
     await connectDB();
-    const post = await Post.findById(id).populate('author', 'name email');
+    const post = await Post.findById(id)
+      .populate('author', 'name email')
+      .populate('comments.user', 'name');
 
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
@@ -79,6 +82,11 @@ export async function DELETE(
 
     if (post.author.toString() !== (session.user as any).id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+
+    // Delete image from GCS if it exists
+    if (post.imageUrl) {
+      await deleteFromGCS(post.imageUrl);
     }
 
     await Post.findByIdAndDelete(id);

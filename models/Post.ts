@@ -10,6 +10,13 @@ export interface IPost extends Document {
   imageUrl?: string;
   published: boolean;
   tags: string[];
+  upvotes: mongoose.Types.ObjectId[];
+  downvotes: mongoose.Types.ObjectId[];
+  comments: {
+    user: mongoose.Types.ObjectId;
+    text: string;
+    createdAt: Date;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,6 +59,25 @@ const PostSchema = new Schema(
       type: [String],
       default: [],
     },
+    upvotes: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }],
+    downvotes: [{
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }],
+    comments: [{
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      text: String,
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    }],
   },
   { timestamps: true }
 );

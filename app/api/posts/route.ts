@@ -7,10 +7,24 @@ import connectDB from '@/lib/mongodb';
 import Post from '@/models/Post';
 import "@/models/User"; // Ensure User model is registered for population
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
+    const { searchParams } = new URL(req.url);
+    const fetchUserPosts = searchParams.get('user') === 'true';
+
     await connectDB();
-    const posts = await Post.find({ published: true })
+
+    let query: any = { published: true };
+
+    if (fetchUserPosts) {
+      const session = await auth();
+      if (!session || !session.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      query = { author: (session.user as any).id };
+    }
+
+    const posts = await Post.find(query)
       .populate('author', 'name email')
       .sort({ createdAt: -1 });
 

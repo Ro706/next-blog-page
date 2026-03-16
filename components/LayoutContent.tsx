@@ -74,6 +74,9 @@ export default function LayoutContent({
                 </Link>
                 {session ? (
                   <>
+                    <Link href="/dashboard" className="nav-item text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                      Dashboard
+                    </Link>
                     <Link href="/posts/create" className="nav-item text-gray-700 hover:text-blue-600 font-medium transition-colors">
                       Write
                     </Link>

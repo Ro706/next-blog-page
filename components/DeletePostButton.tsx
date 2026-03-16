@@ -8,7 +8,7 @@ export default function DeletePostButton({ id }: { id: string }) {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this post?")) return;
+    if (!confirm("Are you sure you want to delete this post? This will also permanently remove the image from storage.")) return;
 
     setLoading(true);
     try {
