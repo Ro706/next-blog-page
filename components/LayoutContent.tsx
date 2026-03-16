@@ -64,7 +64,7 @@ export default function LayoutContent({
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16 items-center">
               <div className="flex items-center">
-                <Link href="/" className="nav-item text-2xl font-bold text-blue-600 hover:scale-105 transition-transform duration-300">
+                <Link href="/" className="nav-item text-2xl font-bold text-blue-600 hover:scale-105 transition-transform duration-300 mt-1">
                   DevBlog
                 </Link>
               </div>

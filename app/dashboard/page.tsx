@@ -14,6 +14,11 @@ import {
   PlusIcon
 } from "@heroicons/react/24/outline";
 
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
 interface Post {
   _id: string;
   title: string;
@@ -83,136 +88,137 @@ export default function DashboardPage() {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Dashboard</h1>
-          <p className="text-gray-500 mt-1">Manage your posts and track their performance.</p>
+          <h1 className="text-3xl font-extrabold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground mt-1">Manage your posts and track their performance.</p>
         </div>
-        <Link 
-          href="/posts/create" 
-          className="flex items-center space-x-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg active:scale-95"
-        >
-          <PlusIcon className="h-5 w-5" />
-          <span>New Post</span>
+        <Link href="/posts/create">
+          <Button className="flex items-center space-x-2">
+            <PlusIcon className="h-5 w-5" />
+            <span>New Post</span>
+          </Button>
         </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 text-blue-600 mb-2">
-            <ArrowUpIcon className="h-6 w-6" />
-            <h3 className="font-semibold text-gray-700">Total Upvotes</h3>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">
-            {posts.reduce((acc, post) => acc + (post.upvotes?.length || 0), 0)}
-          </p>
-        </div>
-        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 text-red-600 mb-2">
-            <ArrowDownIcon className="h-6 w-6" />
-            <h3 className="font-semibold text-gray-700">Total Downvotes</h3>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">
-            {posts.reduce((acc, post) => acc + (post.downvotes?.length || 0), 0)}
-          </p>
-        </div>
-        <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center space-x-3 text-purple-600 mb-2">
-            <ChatBubbleLeftRightIcon className="h-6 w-6" />
-            <h3 className="font-semibold text-gray-700">Total Comments</h3>
-          </div>
-          <p className="text-3xl font-bold text-gray-900">
-            {posts.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}
-          </p>
-        </div>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Upvotes</CardTitle>
+            <ArrowUpIcon className="h-4 w-4 text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">
+              {posts.reduce((acc, post) => acc + (post.upvotes?.length || 0), 0)}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Downvotes</CardTitle>
+            <ArrowDownIcon className="h-4 w-4 text-red-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">
+              {posts.reduce((acc, post) => acc + (post.downvotes?.length || 0), 0)}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Comments</CardTitle>
+            <ChatBubbleLeftRightIcon className="h-4 w-4 text-purple-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">
+              {posts.reduce((acc, post) => acc + (post.comments?.length || 0), 0)}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <Card className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-gray-50 border-b border-gray-100">
-              <tr>
-                <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider">Post</th>
-                <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-center">Status</th>
-                <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-center">Engagement</th>
-                <th className="px-6 py-4 text-sm font-semibold text-gray-600 uppercase tracking-wider text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Post</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center">Engagement</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {posts.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-gray-500 italic">
+                <TableRow>
+                  <TableCell colSpan={4} className="h-24 text-center text-muted-foreground italic">
                     You haven't created any posts yet.
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ) : (
                 posts.map((post) => (
-                  <tr key={post._id} className="hover:bg-gray-50 transition-colors group">
-                    <td className="px-6 py-5">
+                  <TableRow key={post._id}>
+                    <TableCell>
                       <div className="flex flex-col">
-                        <span className="text-gray-900 font-semibold group-hover:text-blue-600 transition-colors">
+                        <span className="font-semibold">
                           {post.title}
                         </span>
-                        <span className="text-xs text-gray-400 mt-1">
+                        <span className="text-xs text-muted-foreground mt-1">
                           Created on {new Date(post.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                    </td>
-                    <td className="px-6 py-5 text-center">
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        post.published 
-                        ? "bg-green-100 text-green-700" 
-                        : "bg-yellow-100 text-yellow-700"
-                      }`}>
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <Badge variant={post.published ? "default" : "secondary"}>
                         {post.published ? "Published" : "Draft"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-5">
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center justify-center space-x-6">
-                        <div className="flex items-center space-x-1.5 text-gray-500" title="Upvotes">
+                        <div className="flex items-center space-x-1.5 text-muted-foreground" title="Upvotes">
                           <ArrowUpIcon className="h-4 w-4 text-blue-500" />
                           <span className="text-sm font-medium">{post.upvotes?.length || 0}</span>
                         </div>
-                        <div className="flex items-center space-x-1.5 text-gray-500" title="Downvotes">
+                        <div className="flex items-center space-x-1.5 text-muted-foreground" title="Downvotes">
                           <ArrowDownIcon className="h-4 w-4 text-red-500" />
                           <span className="text-sm font-medium">{post.downvotes?.length || 0}</span>
                         </div>
-                        <div className="flex items-center space-x-1.5 text-gray-500" title="Comments">
+                        <div className="flex items-center space-x-1.5 text-muted-foreground" title="Comments">
                           <ChatBubbleLeftRightIcon className="h-4 w-4 text-purple-500" />
                           <span className="text-sm font-medium">{post.comments?.length || 0}</span>
                         </div>
                       </div>
-                    </td>
-                    <td className="px-6 py-5 text-right">
-                      <div className="flex items-center justify-end space-x-3">
-                        <Link 
-                          href={`/posts/${post._id}`}
-                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
-                          title="View Post"
-                        >
-                          <EyeIcon className="h-5 w-5" />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end space-x-2">
+                        <Link href={`/posts/${post._id}`}>
+                          <Button variant="ghost" size="icon" title="View Post">
+                            <EyeIcon className="h-4 w-4" />
+                          </Button>
                         </Link>
-                        <Link 
-                          href={`/posts/${post._id}/edit`}
-                          className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all"
-                          title="Edit Post"
-                        >
-                          <PencilIcon className="h-5 w-5" />
+                        <Link href={`/posts/${post._id}/edit`}>
+                          <Button variant="ghost" size="icon" title="Edit Post">
+                            <PencilIcon className="h-4 w-4" />
+                          </Button>
                         </Link>
-                        <button 
-                          onClick={() => handleDelete(post._id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
                           title="Delete Post"
+                          onClick={() => handleDelete(post._id)}
+                          className="text-red-500 hover:text-red-600 hover:bg-red-50"
                         >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
+                          <TrashIcon className="h-4 w-4" />
+                        </Button>
                       </div>
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))
               )}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

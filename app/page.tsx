@@ -12,14 +12,8 @@ async function getPosts() {
     .sort({ createdAt: -1 })
     .lean();
   
-  // Serialize Mongo IDs
-  return posts.map((post: any) => ({
-    ...post,
-    _id: post._id.toString(),
-    author: post.author ? { ...post.author, _id: post.author._id.toString() } : null,
-    createdAt: post.createdAt.toISOString(),
-    updatedAt: post.updatedAt.toISOString(),
-  }));
+  // Serialize Mongo IDs and Dates
+  return JSON.parse(JSON.stringify(posts));
 }
 
 export default async function Home() {

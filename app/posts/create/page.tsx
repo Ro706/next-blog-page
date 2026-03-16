@@ -9,12 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import gsap from "gsap";
 
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+
 const postSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
   content: z.string().min(20, "Content must be at least 20 characters"),
   excerpt: z.string().max(200, "Excerpt must be at most 200 characters").optional(),
   tags: z.string().optional(),
-  published: z.boolean().default(true),
+  published: z.boolean(),
 });
 
 type PostFormValues = z.infer<typeof postSchema>;
@@ -127,110 +132,113 @@ export default function CreatePostPage() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 ref={titleRef} className="text-3xl font-bold text-gray-900 mb-8">Create New Post</h1>
+      <h1 ref={titleRef} className="text-3xl font-bold tracking-tight mb-8">Create New Post</h1>
       
-      <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6 bg-card text-card-foreground p-8 rounded-xl border border-border shadow-sm">
         {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-md text-sm">
+          <div className="bg-destructive/10 text-destructive p-4 rounded-md text-sm">
             {error}
           </div>
         )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="title">Title</Label>
+          <Input
+            id="title"
             {...register("title")}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             placeholder="Enter post title"
           />
-          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
+          {errors.title && <p className="text-sm text-destructive">{errors.title.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Featured Image</label>
+        <div className="space-y-2">
+          <Label htmlFor="image">Featured Image</Label>
           <div className="mt-1 flex items-center space-x-4">
-            <input
+            <Input
+              id="image"
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              className="cursor-pointer file:cursor-pointer"
             />
           </div>
           {imagePreview && (
-            <div className="mt-4 relative h-40 w-full rounded-md overflow-hidden border border-gray-200">
+            <div className="mt-4 relative h-40 w-full rounded-md overflow-hidden border border-border">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={imagePreview} alt="Preview" className="object-cover w-full h-full" />
-              <button 
+              <Button 
                 type="button" 
+                variant="destructive"
+                size="icon"
                 onClick={() => { setImageFile(null); setImagePreview(null); }}
-                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 shadow-lg hover:bg-red-600"
+                className="absolute top-2 right-2 rounded-full h-8 w-8"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
-              </button>
+              </Button>
             </div>
           )}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Excerpt (Optional)</label>
-          <textarea
+        <div className="space-y-2">
+          <Label htmlFor="excerpt">Excerpt (Optional)</Label>
+          <Textarea
+            id="excerpt"
             {...register("excerpt")}
             rows={2}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             placeholder="Brief summary of the post"
+            className="resize-none"
           />
-          {errors.excerpt && <p className="mt-1 text-sm text-red-600">{errors.excerpt.message}</p>}
+          {errors.excerpt && <p className="text-sm text-destructive">{errors.excerpt.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
-          <textarea
+        <div className="space-y-2">
+          <Label htmlFor="content">Content</Label>
+          <Textarea
+            id="content"
             {...register("content")}
             rows={10}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             placeholder="Write your story..."
           />
-          {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>}
+          {errors.content && <p className="text-sm text-destructive">{errors.content.message}</p>}
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Tags (Comma separated)</label>
-          <input
+        <div className="space-y-2">
+          <Label htmlFor="tags">Tags (Comma separated)</Label>
+          <Input
+            id="tags"
             {...register("tags")}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
             placeholder="react, nextjs, typescript"
           />
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
           <input
             id="published"
             type="checkbox"
             {...register("published")}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
           />
-          <label htmlFor="published" className="ml-2 block text-sm text-gray-700">
+          <Label htmlFor="published" className="font-normal cursor-pointer">
             Publish immediately
-          </label>
+          </Label>
         </div>
 
         <div className="flex justify-end space-x-4 pt-4">
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={() => router.back()}
-            className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50 transition-colors"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
             disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Creating..." : "Publish Post"}
-          </button>
+          </Button>
         </div>
       </form>
     </div>

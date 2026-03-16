@@ -10,6 +10,8 @@ import {
   ChatBubbleLeftRightIcon 
 } from "@heroicons/react/24/outline";
 
+import { Button } from "@/components/ui/button";
+
 export default function PostList({ posts }: { posts: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +36,7 @@ export default function PostList({ posts }: { posts: any[] }) {
           <article key={post._id.toString()} className="post-card group">
             <Link href={`/posts/${post._id.toString()}`} className="block space-y-4">
               {post.imageUrl && (
-                <div className="relative h-64 w-full rounded-xl overflow-hidden border border-gray-100 shadow-sm group-hover:shadow-md transition-shadow">
+                <div className="relative h-64 w-full rounded-xl overflow-hidden border border-border shadow-sm group-hover:shadow-md transition-shadow">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
                     src={post.imageUrl} 
@@ -44,34 +46,34 @@ export default function PostList({ posts }: { posts: any[] }) {
                 </div>
               )}
               <div className="space-y-2">
-                <div className="flex items-center space-x-2 text-sm text-gray-500">
-                  <span className="font-semibold text-blue-600">{post.author?.name || 'Anonymous'}</span>
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <span className="font-semibold text-primary">{post.author?.name || 'Anonymous'}</span>
                   <span>•</span>
                   <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                <h2 className="text-2xl font-bold group-hover:text-primary transition-colors">
                   {post.title}
                 </h2>
                 {post.excerpt && (
-                  <p className="text-gray-600 line-clamp-3">
+                  <p className="text-muted-foreground line-clamp-3">
                     {post.excerpt}
                   </p>
                 )}
-                <div className="flex items-center space-x-6 pt-4 border-t border-gray-50">
-                  <div className="flex items-center space-x-1.5 text-gray-500" title="Upvotes">
+                <div className="flex items-center space-x-6 pt-4 border-t border-border">
+                  <div className="flex items-center space-x-1.5 text-muted-foreground" title="Upvotes">
                     <ArrowUpIcon className="h-4 w-4" />
                     <span className="text-xs font-semibold">{post.upvotes?.length || 0}</span>
                   </div>
-                  <div className="flex items-center space-x-1.5 text-gray-500" title="Downvotes">
+                  <div className="flex items-center space-x-1.5 text-muted-foreground" title="Downvotes">
                     <ArrowDownIcon className="h-4 w-4" />
                     <span className="text-xs font-semibold">{post.downvotes?.length || 0}</span>
                   </div>
-                  <div className="flex items-center space-x-1.5 text-gray-500" title="Comments">
+                  <div className="flex items-center space-x-1.5 text-muted-foreground" title="Comments">
                     <ChatBubbleLeftRightIcon className="h-4 w-4" />
                     <span className="text-xs font-semibold">{post.comments?.length || 0}</span>
                   </div>
                   <div className="flex-grow"></div>
-                  <div className="flex items-center text-blue-600 font-medium text-sm">
+                  <div className="flex items-center text-primary font-medium text-sm">
                     Read more
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -83,15 +85,12 @@ export default function PostList({ posts }: { posts: any[] }) {
           </article>
         ))
       ) : (
-        <div className="text-center py-20 bg-white rounded-xl border-2 border-dashed border-gray-200">
-          <h3 className="text-lg font-medium text-gray-900">No posts yet</h3>
-          <p className="mt-1 text-gray-500">Be the first to share something!</p>
+        <div className="text-center py-20 bg-card rounded-xl border-2 border-dashed border-border">
+          <h3 className="text-lg font-medium">No posts yet</h3>
+          <p className="mt-1 text-muted-foreground">Be the first to share something!</p>
           <div className="mt-6">
-            <Link
-              href="/posts/create"
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Create a Post
+            <Link href="/posts/create">
+              <Button>Create a Post</Button>
             </Link>
           </div>
         </div>
