@@ -34,6 +34,7 @@ services:
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/blog
       - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_TRUST_HOST=true
       - GCS_PROJECT_ID=${GCS_PROJECT_ID}
       - GCS_CLIENT_EMAIL=${GCS_CLIENT_EMAIL}
       - GCS_PRIVATE_KEY=${GCS_PRIVATE_KEY}
