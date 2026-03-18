@@ -52,6 +52,33 @@ This project is fully dockerized to ensure consistency across development and pr
 
 ---
 
+## 🚀 Pushing to Docker Hub
+
+To share your application image on Docker Hub, follow these steps:
+
+1. **Build the image** (if not already built):
+   ```bash
+   docker build -t blog-app .
+   ```
+
+2. **Login to Docker Hub**:
+   ```bash
+   docker login
+   ```
+
+3. **Tag your image**:
+   Replace `<your-username>` with your actual Docker Hub username.
+   ```bash
+   docker tag blog-app <your-username>/blog-app:latest
+   ```
+
+4. **Push the image**:
+   ```bash
+   docker push <your-username>/blog-app:latest
+   ```
+
+---
+
 ## 🏗️ Services Overview
 
 | Service | Port | Description |
